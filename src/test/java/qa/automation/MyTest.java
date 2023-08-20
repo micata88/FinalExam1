@@ -1,7 +1,9 @@
 package qa.automation;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
@@ -22,6 +24,8 @@ public class MyTest {
     @Test
     public void successfullLoginTest(){
         driver.get("https://www.saucedemo.com/");
+
+        WebElement username = driver.findElement(By.id("user-name"));
 
     }
 }
