@@ -5,6 +5,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.testng.Assert;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.DataProvider;
@@ -32,22 +33,25 @@ public class LoginTest {
         };
     }
 
-    @Test
-    public void unsuccessfullLogin(){
+    @Test(dataProvider = "wrongUserName" )
+    public void unsuccessfullLogin(String userName, String password){
         driver.get("https://www.saucedemo.com/");
 
         WebElement username = driver.findElement(By.id("user-name"));
         username.click();
-        username.sendKeys("standard_user1");
+        username.sendKeys(userName);
 
-        WebElement password = driver.findElement(By.xpath("(//input[@class='input_error form_input'])[2]"));
-        password.click();
-        password.sendKeys("secret_sauce");
+        WebElement passwordInput = driver.findElement(By.xpath("(//input[@class='input_error form_input'])[2]"));
+        passwordInput.click();
+        passwordInput.sendKeys(password);
 
         WebElement loginButton = driver.findElement(By.cssSelector("[value=Login]"));
         loginButton.click();
 
         WebElement errorLoginText = driver.findElement(By.xpath("//*[text()='Epic sadface: Username and password do not match any user in this service']"));
+
+        Assert.assertTrue(errorLoginText.isDisplayed());
+
 
     }
 }
