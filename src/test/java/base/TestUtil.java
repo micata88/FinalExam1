@@ -3,6 +3,7 @@ package base;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.edge.EdgeDriver;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeMethod;
@@ -10,6 +11,7 @@ import org.testng.annotations.BeforeTest;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.time.Duration;
 import java.util.Properties;
 
 public class TestUtil {
@@ -21,7 +23,6 @@ public class TestUtil {
     @BeforeMethod
     public void SetUp(){
         setupBrowserDriver();
-        loadUrl();
     }
     @AfterMethod
     public void tearDown(){
@@ -37,11 +38,34 @@ public class TestUtil {
         }catch (IOException e){
             System.out.println("Cannot read configs");
         }
-        WebDriverManager.chromedriver().setup();
-        driver = new ChromeDriver();
+        switch (browser){
+            case "chrome":
+                createChromeDriver(url,implicitWait);
+                break;
+            case "edge":
+                createEdgeDriver(url,implicitWait);
+                break;
+            default:
+                throw new IllegalStateException("Unsupported browser type");
+
+        }
     }
 
-    private void loadUrl(){
+    private void loadUrl(String url){
         driver.get(url);
+    }
+    private void createChromeDriver(String url,int implicitWait){
+        WebDriverManager.chromedriver().setup();
+        driver = new ChromeDriver();
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(implicitWait));
+        loadUrl(url);
+
+    }
+    private void createEdgeDriver(String url,int implicitWait){
+        WebDriverManager.edgedriver().setup();
+        driver = new EdgeDriver();
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(implicitWait));
+        loadUrl(url);
+
     }
 }
