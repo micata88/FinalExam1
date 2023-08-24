@@ -29,7 +29,7 @@ public class LoginTest extends TestUtil {
     }
 
     @Test(dataProvider = "wrongUserName" )
-    public void unsuccessfullLogin(String userName, String password){
+    public void unsuccessfullyLogin(String userName, String password){
  //       driver.get("https://www.saucedemo.com/");
 
         WebElement username = driver.findElement(By.id("user-name"));
@@ -43,13 +43,13 @@ public class LoginTest extends TestUtil {
         WebElement loginButton = driver.findElement(By.cssSelector("[value=Login]"));
         loginButton.click();
 
-        WebElement errorLoginText = driver.findElement(By.xpath("//*[text()='Epic sadface: Username and password do not match any user in this service']"));
+        WebElement errorLoginText = driver.findElement(By.xpath("//*[text()='Epic sad-face: Username and password do not match any user in this service']"));
 
         Assert.assertTrue(errorLoginText.isDisplayed());
     }
     @Test(dataProvider = "csvUserList")
-    public void SuccessfullLogin(String userName,String password){
-//       driver.get("https://www.saucedemo.com/");
+    public void SuccessfullyLogin(String userName, String password){
+  //    driver.get("https://www.saucedemo.com/");
 
         WebElement username = driver.findElement(By.id("user-name"));
         username.click();
